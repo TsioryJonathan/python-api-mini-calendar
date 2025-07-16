@@ -6,7 +6,10 @@ app = FastAPI()
 
 
 @app.get("/")
-def root():
+def root(request:Request):
+    accept = request.headers.Accept
+    if(accept != "text/plain" or accept != "text/html"):
+        return Response(content="Accept header should be either text/plain or text/html", status_code=400)
     with open("welcome.html", "r", encoding="utf-8") as file:
         html_content = file.read()
     return Response(content=html_content, status_code=200, media_type="text/html")
