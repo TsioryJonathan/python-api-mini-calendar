@@ -17,11 +17,11 @@ def root(request: Request):
             status_code=400
         )
 
-    #if header_api_key != "12345678":
-    #    return JSONResponse(
-    #        content={"message": "Incorrect API key"},
-    #        status_code=400
-    #    )
+    if header_api_key != "12345678":
+       return JSONResponse(
+         content={"message": "Incorrect API key"},
+         status_code=400
+       )
 
     with open("welcome.html", "r", encoding="utf-8") as file:
         html_content = file.read()
@@ -61,6 +61,21 @@ def create_event(events: List[EventModel]):
     for event in events:
         events_store.append(event)
     return {"Events": serialized_stored_events()}
+
+@app.put("/events")
+def modify_event(events: List[EventModel]):
+    for event in events:
+        index = -1
+        for i, existing in enumerate(events_store):
+             if existing.name == event.name:
+                index = i
+                break
+        if index == -1:
+            events_store.append(event)
+        else:
+            events_store[index] = event
+    return {"Events": serialized_stored_events()}
+
 @app.get("/{full_path:path}")
 def catch_all(full_path: str):
     with open ("404.html" , "r" , encoding="utf-8") as file:
