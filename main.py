@@ -1,14 +1,14 @@
 import json
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from starlette.responses import Response
 
 app = FastAPI()
 
 
 @app.get("/")
-def root(request:Request):
-    accept = request.headers.Accept
-    if(accept != "text/plain" or accept != "text/html"):
+def root(request : Request):
+    accept = request.headers.get("Accept")
+    if "text/plain" not in accept and "text/html" not in accept:
         return Response(content="Accept header should be either text/plain or text/html", status_code=400)
     with open("welcome.html", "r", encoding="utf-8") as file:
         html_content = file.read()
