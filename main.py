@@ -14,11 +14,11 @@ def root(request: Request):
             status_code=400
         )
 
-    if header_api_key != "12345678":
-        return JSONResponse(
-            content={"message": "Incorrect API key"},
-            status_code=400
-        )
+    #if header_api_key != "12345678":
+    #    return JSONResponse(
+    #        content={"message": "Incorrect API key"},
+    #        status_code=400
+    #    )
 
     with open("welcome.html", "r", encoding="utf-8") as file:
         html_content = file.read()
@@ -31,7 +31,11 @@ def root(request: Request):
 
 @app.get("/{full_path:path}")
 def catch_all(full_path: str):
-    return JSONResponse(
-        content={"detail": f"Page '/{full_path}' not found"},
-        status_code=404
-    )
+    with open ("404.html" , "r" , encoding="utf-8") as file:
+        html_content = file.read()
+        return Response(
+        content=html_content,
+        status_code=404,
+        media_type="text/html"
+        )
+    return None
