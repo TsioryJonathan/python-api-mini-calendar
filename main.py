@@ -38,13 +38,7 @@ class EventModel(BaseModel):
     start_date: str
     end_date: str
 
-events_store: List[EventModel] = [EventModel(
-    name="Hackathon 2025",
-    description="Concours de programmation",
-    start_date="2025-08-01",
-    end_date="2025-08-02"
-)]
-
+events_store: List[EventModel] = []
 
 def serialized_stored_events():
     events_converted = []
